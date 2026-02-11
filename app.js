@@ -6,6 +6,7 @@ const TipoObra = Object.freeze({
 
 const SELECT_OPTIONS = Object.freeze({
   tipoObra: [TipoObra.MaestroOriginal, TipoObra.EpisodioOriginal, TipoObra.OriginalUnitario],
+  ambito: ["Audiovisual", "Dramático"],
   formato: ["Largometraje", "Cortometraje", "Serie", "Telenovela", "Serie documental"],
   genero: ["Ficción", "Informativo", "Documental", "Reportaje"],
   sonido: ["Mudo", "Hablado"],
@@ -17,9 +18,16 @@ const SELECT_OPTIONS = Object.freeze({
 const FIELD_KEYS = Object.freeze({
   codigoIda: "Código IDA",
   tipoObra: "Tipo de obra",
+  ambito: "Ámbito",
   titulo: "Título",
   tituloFormatoIda: "Título formato IDA",
   idioma: "Idioma",
+  idiomasAdicionales: "Idiomas adicionales",
+  creadoPorSocio: "Creado por (Socio)",
+  fechaCreacion: "Fecha de creación",
+  actores: "Actores",
+  directores: "Directores",
+  guionistas: "Guionistas",
   temporadasTotales: "Temporadas totales",
   cantidadEpisodios: "Cantidad de episodios",
   duracionMinMax: "Duración min / max",
@@ -571,9 +579,17 @@ function createCard() {
 
   const codigoIda = createInput();
   const tipoObra = createSelect(SELECT_OPTIONS.tipoObra);
+  const ambito = createSelect(SELECT_OPTIONS.ambito);
+  ambito.value = "Audiovisual"; // Valor por defecto
   const titulo = createAutocompleteInput(obrasData, { placeholder: "Nombre gramaticalmente correcto de la obra" });
   const tituloFormatoIda = createInput();
   const idioma = createInput();
+  const idiomasAdicionales = createInput();
+  const creadoPorSocio = createInput();
+  const fechaCreacion = createInput({ type: "datetime-local", placeholder: "yyyy-mm-dd hh:mm:ss" });
+  const actores = createInput();
+  const directores = createInput();
+  const guionistas = createInput();
   const temporadasTotales = createInput();
   const cantidadEpisodios = createInput();
   const duracionMinMax = createInput({ placeholder: "Ej. 70 / 70" });
@@ -655,7 +671,14 @@ function createCard() {
   const general = createGroup("Información general");
   general._grid.appendChild(createField({ label: FIELD_KEYS.codigoIda, control: codigoIda, colClass: "col4" }));
   general._grid.appendChild(createField({ label: FIELD_KEYS.tipoObra, control: tipoObra, colClass: "col4" }));
+  general._grid.appendChild(createField({ label: FIELD_KEYS.ambito, control: ambito, colClass: "col4" }));
   general._grid.appendChild(createField({ label: FIELD_KEYS.idioma, control: idioma, colClass: "col4" }));
+  general._grid.appendChild(createField({ label: FIELD_KEYS.idiomasAdicionales, control: idiomasAdicionales, colClass: "col6" }));
+  general._grid.appendChild(createField({ label: FIELD_KEYS.creadoPorSocio, control: creadoPorSocio, colClass: "col6" }));
+  general._grid.appendChild(createField({ label: FIELD_KEYS.fechaCreacion, control: fechaCreacion, colClass: "col4" }));
+  general._grid.appendChild(createField({ label: FIELD_KEYS.actores, control: actores, colClass: "col4" }));
+  general._grid.appendChild(createField({ label: FIELD_KEYS.directores, control: directores, colClass: "col4" }));
+  general._grid.appendChild(createField({ label: FIELD_KEYS.guionistas, control: guionistas, colClass: "col6" }));
   general._grid.appendChild(createField({ label: FIELD_KEYS.titulo, control: titulo, colClass: "col6" }));
   general._grid.appendChild(createField({ label: FIELD_KEYS.tituloFormatoIda, control: tituloFormatoIda, colClass: "col6" }));
 
@@ -709,9 +732,16 @@ function createCard() {
   card._controls = {
     codigoIda,
     tipoObra,
+    ambito,
     titulo,
     tituloFormatoIda,
     idioma,
+    idiomasAdicionales,
+    creadoPorSocio,
+    fechaCreacion,
+    actores,
+    directores,
+    guionistas,
     temporadasTotales,
     cantidadEpisodios,
     duracionMinMax,
@@ -1852,9 +1882,16 @@ function cardToRecord(card) {
   return {
     [FIELD_KEYS.codigoIda]: c.codigoIda.value.trim(),
     [FIELD_KEYS.tipoObra]: c.tipoObra.value,
+    [FIELD_KEYS.ambito]: c.ambito.value,
     [FIELD_KEYS.titulo]: c.titulo.value.trim(),
     [FIELD_KEYS.tituloFormatoIda]: c.tituloFormatoIda.value.trim(),
     [FIELD_KEYS.idioma]: c.idioma.value.trim(),
+    [FIELD_KEYS.idiomasAdicionales]: c.idiomasAdicionales.value.trim(),
+    [FIELD_KEYS.creadoPorSocio]: c.creadoPorSocio.value.trim(),
+    [FIELD_KEYS.fechaCreacion]: c.fechaCreacion.value.trim(),
+    [FIELD_KEYS.actores]: c.actores.value.trim(),
+    [FIELD_KEYS.directores]: c.directores.value.trim(),
+    [FIELD_KEYS.guionistas]: c.guionistas.value.trim(),
     [FIELD_KEYS.temporadasTotales]: c.temporadasTotales.value.trim(),
     [FIELD_KEYS.cantidadEpisodios]: c.cantidadEpisodios.value.trim(),
     [FIELD_KEYS.duracionMinMax]: c.duracionMinMax.value.trim(),
@@ -1878,9 +1915,16 @@ function buildHeaders(records) {
   const baseHeaders = [
     FIELD_KEYS.codigoIda,
     FIELD_KEYS.tipoObra,
+    FIELD_KEYS.ambito,
     FIELD_KEYS.titulo,
     FIELD_KEYS.tituloFormatoIda,
     FIELD_KEYS.idioma,
+    FIELD_KEYS.idiomasAdicionales,
+    FIELD_KEYS.creadoPorSocio,
+    FIELD_KEYS.fechaCreacion,
+    FIELD_KEYS.actores,
+    FIELD_KEYS.directores,
+    FIELD_KEYS.guionistas,
   ];
 
   const maestroHeaders = [FIELD_KEYS.temporadasTotales, FIELD_KEYS.cantidadEpisodios, FIELD_KEYS.duracionMinMax];
