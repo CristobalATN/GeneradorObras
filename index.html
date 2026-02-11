@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generador de formatos IDA - Obras Padre</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <main class="container">
+        <header class="header">
+          <div class="headerText">
+            <h1>Generador de formatos IDA</h1>
+            <p class="subtitle">Primer formato: Obras padre (tareas principales)</p>
+          </div>
+        </header>
+
+        <section class="toolbar" aria-label="Acciones">
+          <div class="toolbarLeft">
+            <button id="addRowBtn" class="btn btnPrimary" type="button">
+              <span class="btnIcon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 5v14" />
+                  <path d="M5 12h14" />
+                </svg>
+              </span>
+              Agregar obra
+            </button>
+            <button id="downloadMastersBtn" class="btn btnOutline" type="button">
+              <span class="btnIcon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 3v10" />
+                  <path d="M8 11l4 4 4-4" />
+                  <path d="M4 17v3h16v-3" />
+                </svg>
+              </span>
+              Descargar Maestros
+            </button>
+            <button id="downloadEpisodesBtn" class="btn btnOutline" type="button">
+              <span class="btnIcon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 3v10" />
+                  <path d="M8 11l4 4 4-4" />
+                  <path d="M4 17v3h16v-3" />
+                </svg>
+              </span>
+              Descargar Episodios
+            </button>
+            <button id="downloadParticipationsBtn" class="btn btnOutline" type="button">
+              <span class="btnIcon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 3v10" />
+                  <path d="M8 11l4 4 4-4" />
+                  <path d="M4 17v3h16v-3" />
+                </svg>
+              </span>
+              Descargar Participaciones
+            </button>
+            <button id="downloadAllBtn" class="btn btnOutline" type="button">
+              <span class="btnIcon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 3v10" />
+                  <path d="M8 11l4 4 4-4" />
+                  <path d="M4 17v3h16v-3" />
+                </svg>
+              </span>
+              Descargar Todo
+            </button>
+          </div>
+          <div class="toolbarRight">
+            <span class="hint">
+              Todos los campos son opcionales. Temporadas/episodios/duración solo aplican a “Maestro Original”.
+            </span>
+          </div>
+        </section>
+
+        <section class="cards" aria-label="Obras">
+          <div id="worksList" class="cardsList"></div>
+        </section>
+
+        <section class="cards" aria-label="Episodios">
+          <div id="episodesSection" class="episodesSection" hidden>
+            <article class="workCard">
+              <header class="cardHeader">
+                <div class="cardTitleWrap">
+                  <div class="cardTitle">Formato 2: Episodios</div>
+                  <div class="cardMeta">Disponible cuando existe al menos un “Maestro Original”</div>
+                </div>
+              </header>
+              <div class="cardBody">
+                <section class="group">
+                  <h3 class="groupTitle">Selección</h3>
+                  <div class="grid">
+                    <div class="field col12">
+                      <label class="label" for="episodesMasterSelect">Tarea principal</label>
+                      <select id="episodesMasterSelect"></select>
+                    </div>
+                  </div>
+                </section>
+                <div id="seasonsWrap" class="seasonsWrap"></div>
+                <div id="episodesValidation" class="episodesValidation" aria-live="polite"></div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="cards" aria-label="Participaciones">
+          <div id="participationsSection" class="episodesSection" hidden>
+            <article class="workCard">
+              <header class="cardHeader">
+                <div class="cardTitleWrap">
+                  <div class="cardTitle">Formato 3: Participaciones</div>
+                  <div class="cardMeta">Obligatorio para cada “Maestro Original” y sus episodios</div>
+                </div>
+              </header>
+              <div class="cardBody">
+                <section class="group">
+                  <h3 class="groupTitle">Selección</h3>
+                  <div class="grid">
+                    <div class="field col12">
+                      <label class="label" for="participationsMasterSelect">Tarea principal</label>
+                      <select id="participationsMasterSelect"></select>
+                    </div>
+                  </div>
+                </section>
+
+                <section class="group">
+                  <h3 class="groupTitle">Participaciones por defecto</h3>
+                  <div class="grid">
+                    <div class="field col12">
+                      <div id="participationsDefaultRows"></div>
+                      <div class="rowActions">
+                        <button id="addDefaultParticipationBtn" class="miniBtn" type="button">Agregar participación</button>
+                      </div>
+                      <div class="helpText">Estas participaciones se aplican a todos los episodios, salvo que personalices algunos abajo.</div>
+                    </div>
+                  </div>
+                </section>
+
+                <section class="group">
+                  <h3 class="groupTitle">Personalizar por episodio (opcional)</h3>
+                  <div class="grid">
+                    <div class="field col12">
+                      <div class="rowActions">
+                        <button id="addParticipationGroupBtn" class="miniBtn miniBtnPrimary" type="button">
+                          Agregar personalización
+                        </button>
+                      </div>
+                      <div class="helpText">
+                        Crea grupos distintos para asignar combinaciones diferentes de participaciones a distintos episodios.
+                      </div>
+                    </div>
+                    <div class="field col12">
+                      <div id="participationsGroups" class="participationsGroups"></div>
+                    </div>
+                  </div>
+                </section>
+
+                <div id="participationsValidation" class="episodesValidation" aria-live="polite"></div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
+
